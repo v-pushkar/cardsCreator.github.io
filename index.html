@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<style type="text/css">
+	#galleryBox{
+		display: flex;
+		flex-direction: row;
+		width: 100vw;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+	.navrow{
+		background: #b6c2c7;
+		margin-top: 25px;
+		border-top: 1px solid #777777;
+		border-bottom: 1px solid #777777;
+		padding: 5px 10px;
+		display: flex;
+		justify-content: flex-start;
+		margin-bottom: 30px;
+	}
+	.navrow .navitem{
+		margin-right: 25px;
+		border-right: 1px solid #777777;
+		padding-right: 15px;
+	}
+	.navrow .navitem label{
+		text-transform: uppercase;
+		font-weight: bold;
+		margin-right: 15px;
+		color: #262e35;
+	}
+	.navrow .navitem input{
+		max-width: 50px;
+	}
+	.countBlocks-2 .item-Wrapp{
+		width: calc(100vw / 2 - 10px);
+		max-height: calc(100vw / 2 + 15px);
+	}	
+	.countBlocks-3 .item-Wrapp{
+		width: calc(100vw / 3 - 10px);
+		max-height: calc(100vw / 3 + 15px);
+	}
+	.countBlocks-5 .item-Wrapp{
+		width: calc(100vw / 5 - 10px);
+		max-height: calc(100vw / 5 + 15px);
+	}
+	.withBorder.countBlocks-5 .item-Wrapp{
+		width: calc(100vw / 5 - 14px);
+		
+	}
+	.countBlocks-6 .item-Wrapp{
+		width: calc(100vw / 6 - 10px);
+		max-height: calc(100vw / 6 + 15px);
+	}
+	.withBorder.countBlocks-6 .item-Wrapp{
+		width: calc(100vw / 6 - 16px);
+		
+	}
+	.countBlocks-7 .item-Wrapp{
+		width: calc(100vw / 7 - 10px);
+		max-height: calc(100vw / 7 + 15px);
+	}
+	.withBorder.countBlocks-7 .item-Wrapp{
+		width: calc(100vw / 7 - 16px);
+		
+	}
+	.countBlocks-8 .item-Wrapp{
+		width: calc(100vw / 8 - 10px);
+		max-height: calc(100vw / 8 + 15px);
+	}
+	.withBorder.countBlocks-8 .item-Wrapp{
+		width: calc(100vw / 8 - 18px);
+		
+	}
+	.item-Wrapp{
+		display: inline-flex;		
+		width: 22vw;
+		height: calc(22vw + 15px);
+		padding: 5px;
+		padding-bottom: 15px;
+		position: relative;
+		margin-bottom: 20px;
+	}
+	.withBorder .item-Wrapp{
+		border:1px solid #777;
+	}
+	.noText .item-Wrapp .item-text{
+		display: none;
+	}
+	.item-Wrapp .item-text{
+		position: absolute;
+		z-index: 2;
+		bottom: 0;
+		width: 100%; 
+		text-align: center;
+		text-transform: uppercase;
+	}
+	.item-Wrapp img{
+		width: calc(100%);
+		max-height: calc(100% - 10px);
+	}
+	.button-normal, input[type="file"]{
+		text-transform: uppercase;
+    	font-weight: bold;
+    	background: #607D8B;
+    	border: none;
+    	padding: 3px 15px;
+    	animation-duration: oll 0.3ms; 
+	}
+	.button-normal:hover{
+		background-color: #4c5255;
+	}
+	@media print{
+		.navBox{
+			display: none;
+		}
+	}
+</style>
+<body>
+<div class="navBox">
+	<input type="file" id="fileinput" multiple />
+	<div class="navrow">
+		<div class="navitem">
+			<label>Hide text in blocks</label><input type="checkbox" name="addtext">
+		</div>
+		<div class="navitem">
+			<label>Add border to blocks</label><input type="checkbox" name="addborder">
+		</div>
+		<div class="navitem">
+			<label>how elements in row</label><span>(from 2 to 8)</span><input type="text" name="addnumber" onkeypress='validate(event)' maxlength="1">
+		</div>
+		<div class="navitem">
+			<!-- <label>Press for change</label><button class="button-normal" data-name="startChanges" onclick="manipulation()" type="submit">Push</button> -->
+			<label>Press for change</label><button class="button-normal" data-name="startChanges" onclick="manipulation()">Push</button>
+		</div>
+	</div>
+</div>
+
+<div id="galleryBox">
+	
+</div>
+<script type="text/javascript">
+	
+	var galleryBox = document.getElementById("galleryBox");
+  function readMultipleFiles(evt) {
+    //Retrieve all the files from the FileList object
+    var files = evt.target.files; 
+
+    if (files) {
+        for (var i=0, f; f=files[i]; i++) {
+              var r = new FileReader();
+            r.onload = (function(f) {
+                return function(e) {
+                    var contents = e.target.result;
+                                
+                    createElement(f.name, f.type);                                 
+                };
+            })(f);
+
+            r.readAsText(f);
+        }   
+    } else {
+          alert("Failed to load files"); 
+    }
+  }
+ 
+  document.getElementById('fileinput').addEventListener('change', readMultipleFiles, false);
+
+  function createElement(el, typ){
+  	if(typ.indexOf('image/') != -1){
+  		let itemWrapp = document.createElement("div");
+        itemWrapp.setAttribute('class', `item-Wrapp`);
+    let itemEl = document.createElement("img");
+    	itemEl.setAttribute('src', el);
+    let textAdd = document.createElement("label");
+    	textAdd.setAttribute('class', `item-text`);
+    	textAdd.innerHTML = "text";
+
+        itemWrapp.appendChild(itemEl);
+        itemWrapp.appendChild(textAdd);
+        galleryBox.appendChild(itemWrapp)
+  	}
+  	else{
+  		console.log("element :"+el+" not imege");
+  	}
+  };
+
+window.onclick = e => {
+    // console.log(e.target);
+    // console.log(e.target.tagName);
+    if(e.target.tagName == "LABEL" && e.target.className == "item-text"){
+    	let newtext = prompt(" enter text: ");
+    	e.target.innerHTML = newtext;
+    }
+    else { 	
+    	
+    	console.log("try click agen");
+    }
+};
+
+function manipulation(){
+	let noText = document.querySelector('[name="addtext"]').checked;
+	let withBorder = document.querySelector('[name="addborder"]').checked;
+	let countBlocks = document.querySelector('[name="addnumber"]').value;
+	console.log(`noText : ${noText} | withBorder : ${withBorder}`);
+	let box = document.getElementById('galleryBox');
+	box.setAttribute('class', `${noText ? 'noText ' : ''}${withBorder ? ' withBorder ' : ''}${countBlocks ? "countBlocks-"+Number(countBlocks) : ""}`)
+} 
+
+function validate(evt) { // valedate inpute value, must be only number
+  var theEvent = evt || window.event;
+
+  // Handle paste
+  if (theEvent.type === 'paste') {
+      key = event.clipboardData.getData('text/plain');
+  } else {
+  // Handle key press
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
+  }
+  var regex = /[1-8]|\./;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+
+
+// document.onload = startScripts();
+// function startScripts(){
+// 	let countBlocks = document.querySelector('[name="addnumber"]');
+// 	countBlocks.onkeyup = function validate(){
+// 		console.log(`${ Number(countBlocks.value)}`);
+// 		// console.log(`typeof aaa : ${typeof +countBlocks.value}`);
+// 		// if(typeof countBlocks.value !== "number"){
+// 		// 	countBlocks.value = "";
+// 		// }
+		
+		
+// 	}
+// }
+ 
+</script>
+</body>
+</html>
